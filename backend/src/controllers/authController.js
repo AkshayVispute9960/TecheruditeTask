@@ -6,6 +6,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import sendVerificationEmail from '../utils/emailService.js'
 
 const register = async (req, res, next) => {
+  console.log('register hitting')
   try {
     const { firstName, lastName, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,15 +22,16 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
     const user = await UserModel.findByEmail(email);
     if (!user) {
       return next({ status: 404, message: 'User not found!' });
     }
+    console.log("user",user[0].role)
 
-    if (user.role !== 'admin') {
-      return res.status(403).json({ message: 'You are not allowed to login from here' });
+    if (user[0].role !== 'admin') {
+      return res.status(403).json(new ApiResponse(403, {}, 'You are not allowed to login from here'));
   }
 
     const isPasswordValid = await bcrypt.compare(password, user[0].password);
@@ -37,7 +39,7 @@ const login = async (req, res, next) => {
       return next({ status: 401, message: 'Invalid password!' });
     }
 
-    const token = jwt.sign({ id: user.id , role:role}, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     return res.status(200).json(new ApiResponse(200, {name:user[0].username, email:user[0].email, token }, 'Login successful!'));
   } catch (error) {

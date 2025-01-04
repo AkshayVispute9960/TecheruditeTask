@@ -48,8 +48,6 @@ const loginSchema = Joi.object({
     "string.email": "Invalid email format.",
     "string.empty": "Email is required.",
   }),
-
-  role: Joi.string().valid('admin', 'customer').required(),
 })
 
 

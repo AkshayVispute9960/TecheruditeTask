@@ -4,10 +4,14 @@ import dotenv from 'dotenv';
 import errorHandler from './src/middleware/errorHandler.js';
 import './src/config/db.js'
 import authRoutes from './src/route/authRoutes.js'
+import cors from 'cors'
+
 
 dotenv.config();
 
 const app = express();
+app.use(cors())
+
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
