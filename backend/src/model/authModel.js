@@ -36,7 +36,6 @@ findByEmail: async (email) => {
     try {
         const query = 'UPDATE users SET isVerified = 1, verificationToken = NULL WHERE email = ? AND isVerified = 0';
         const [result] = await db.promise().query(query, [email]);
-        console.log("result-->", result);
         return result;
     } catch (error) {
         console.error('Error in UserModel.isVerified:', error.message);

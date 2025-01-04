@@ -6,7 +6,6 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import sendVerificationEmail from '../utils/emailService.js'
 
 const register = async (req, res, next) => {
-  console.log('register hitting')
   try {
     const { firstName, lastName, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
