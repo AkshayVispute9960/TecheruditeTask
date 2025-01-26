@@ -44,7 +44,4 @@ findByEmail: async (email) => {
 },
 };
 
-
-
-
 export default UserModel

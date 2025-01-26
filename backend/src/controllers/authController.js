@@ -27,6 +27,9 @@ const login = async (req, res, next) => {
     if (!user) {
       return next({ status: 404, message: 'User not found!' });
     }
+    if(user[0].isVerified === 0){
+      return res.status(403).json(new ApiResponse(403, { }, 'first verified email and try to login'));
+    }
     console.log("user",user[0].role)
 
     if (user[0].role !== 'admin') {
